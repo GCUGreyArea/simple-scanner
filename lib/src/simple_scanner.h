@@ -3,6 +3,13 @@
 
 #include <stdbool.h>
 
+#define MAX_KEY_SIZE 50
+#define MAX_NAME_SIZE 50
+#define MAX_SPECIAL_SIZE 15
+#define MAX_NUM_SPACIALS 6
+#define AMX_PLACE_SIZE 50
+#define MAX_STATUS_SIZE 25
+
 /**
  * @brief Define some mock types for nock messages
  * 
@@ -16,11 +23,11 @@ typedef enum ss_types {
 
 /**
  * @brief Long data 
- * @example "LONG TYPE: 1.87435322456,10.896"
+ * @example "LONG TYPE: name=lodon,51.5072,0.1276"
  * 
  */
 typedef struct ss_long_data {
-    char name[50];
+    char name[MAX_NAME_SIZE];
     double latitude;
     double longitude;
 } ss_long_data_t;
@@ -31,10 +38,10 @@ typedef struct ss_long_data {
  * 
  */
 typedef struct ss_special_data {
-    char name[50];
+    char name[MAX_NAME_SIZE];
     double latitude;
     double longitude;
-    char special[6][15];
+    char special[MAX_NUM_SPACIALS][MAX_SPECIAL_SIZE];
     int num_special;
 } ss_special_data_t;
 
@@ -43,9 +50,9 @@ typedef struct ss_special_data {
  * @example "NOT SPECIAL TYPE: \"external system two\",\"Ormskirk research\",\acive\"""
  */
 typedef struct ss_not_special_data {
-    char name[50];
-    char place[50];
-    char status[45];
+    char name[MAX_NAME_SIZE];
+    char place[AMX_PLACE_SIZE];
+    char status[MAX_PLACE_SIZE];
 } ss_not_special_data_t;
 
 
