@@ -4,14 +4,11 @@
 #include "simple_scanner.h"
 
 /**
- * @brief This must have
- * 1. some kind of template for patterns
- * 2. some kind of engine that renders the pattern into data
- *  2.1 Do we want that to be a map?
- *  2.2 Is the format / structure hard coded and decided at build time?
+ * @brief Clasify the mesage into a type amnd move the poiter past the header 
  *
+ * @param str 
+ * @return ss_types_t 
  */
-
 inline static ss_types_t ss_clasify_and_advance_message(char **str)
 {
     char header[18] = {'\0'};
@@ -99,7 +96,6 @@ inline static char *ss_parse_next(char *dest, char *msg, char delim)
  */
 bool ss_parse_long_mesage(ss_data_t *data, char *msg)
 {
-
     // spaces and colons
     msg = ss_getstart_of_data(msg);
 
@@ -133,8 +129,6 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
 {
     msg = ss_getstart_of_data(msg);
 
-    data->type = SS_SPECIAL_MESSAGE;
-
     // The first part of the message is deliniated by the character \", so it's
     // easy to parse
     msg = ss_parse_next(data->data.special_data.name,msg,',');
@@ -143,6 +137,10 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
     char longetude[25] = {'\0'};
 
     msg = ss_parse_next(latitude,msg,',');
+    if(msg == NULL) {
+        return false;
+    }
+
     msg = ss_parse_next(longetude,msg,',');
 
     char *end;
@@ -158,7 +156,7 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
     }
 
     data->data.special_data.num_special = special_count;
-
+    data->type = SS_SPECIAL_MESSAGE;
     return true;
 }
 
