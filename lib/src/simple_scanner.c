@@ -137,11 +137,14 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
     char longetude[25] = {'\0'};
 
     msg = ss_parse_next(latitude,msg,',');
-    if(msg == NULL) {
+    if(msg == NULL || msg[0] == '\0') {
         return false;
     }
 
     msg = ss_parse_next(longetude,msg,',');
+    if(msg == NULL || msg[0] == '\0') {
+        return false;
+    }
 
     char *end;
     data->data.special_data.latitude = strtod(latitude, &end);
@@ -160,9 +163,22 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
     return true;
 }
 
-bool _parse_not_special_message(ss_data_t *data, char *msg)
+bool ss_parse_not_special_message(ss_data_t *data, char *msg)
 {
-    return false;
+    msg = ss_parse_next(data->data.not_special_data.name,msg,',');
+    if(msg == NULL || msg[0] == '\0') {
+        return false;
+    }
+
+    msg = ss_parse_next(data->data.not_special_data.place,msg,',');
+    if(msg == NULL || msg[0] == '\0') {
+        return false;
+    }
+    msg = ss_parse_next(data->data.not_special_data.status,msg,','); 
+
+    data->type = SS_NOT_SPECIAL_MESSAGE;
+
+    return true;
 }
 
 bool ss_parse_message(ss_data_t *data, char *msg)
@@ -176,7 +192,7 @@ bool ss_parse_message(ss_data_t *data, char *msg)
     case SS_SPECIAL_MESSAGE:
         return ss_parse_special_message(data, msg);
     case SS_NOT_SPECIAL_MESSAGE:
-        return _parse_not_special_message(data, msg);
+        return ss_parse_not_special_message(data, msg);
     case SS_MSG_UNKNOWN:
     default:
         break;
