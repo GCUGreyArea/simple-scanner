@@ -70,26 +70,64 @@ inline static char *ss_getstart_of_data(char *str)
 inline static char *ss_parse_next(char *dest, char *msg, char delim)
 {
     int cnt = 0;
-    while (msg[cnt] != ',' && msg[cnt] != '\0')
+    while (msg[cnt] != delim && msg[cnt] != '\0')
     {
         dest[cnt] = msg[cnt];
         cnt++;
     }
 
+    dest[cnt] = '\0';
+
     char *ret = &msg[cnt];
-    if(msg[cnt] == ',') {
+    if(msg[cnt] == delim) {
         ret = &msg[cnt+1];
     }
 
-    dest[cnt+1] = '\0';
 
 
     return ret;
 }
 
+
+inline static char * parse_kv_value(char * dest, char * msg, char vdelim, char kdelim, char * key) {
+
+    char kbuf[MAX_KEY_SIZE] = {'\0'};
+    // Go to the valude delimiter as we are not intersted in the key
+    int cnt = 0;
+    while (msg[cnt] != vdelim && msg[cnt] != '\0' && cnt != MAX_KEY_SIZE)
+    {
+        kbuf[cnt] = msg[cnt];
+        cnt++;
+    }
+
+    if(strcmp(key,kbuf) != 0) {
+        return "";
+    }
+
+    msg = &msg[cnt+1];
+    cnt=0;
+
+    while (msg[cnt] != kdelim && msg[cnt] != '\0')
+    {
+        dest[cnt] = msg[cnt];
+        cnt++;
+    }
+
+    dest[cnt] = '\0';
+
+    char * ret = &msg[cnt];
+    if(msg[cnt] == kdelim) {
+        ret = &msg[cnt+1];
+    }
+
+    dest[cnt+1] = '\0';
+
+    return ret;
+    
+}
 /**
  * @brief Parse a ling message
- * @example "LONG TYPE: 1.87435322456,10.896"
+ * @example "LONG TYPE: name=lodon,51.5072,0.1276"
  *
  * @param data
  * @param msg
@@ -100,6 +138,12 @@ bool ss_parse_long_mesage(ss_data_t *data, char *msg)
 {
     // spaces and colons
     msg = ss_getstart_of_data(msg);
+
+    msg = parse_kv_value(data->data.long_data.name,msg,'=',',',"name");
+    if (*msg == '\0')
+    {
+        return false;
+    }
 
     char latitude[25] = {'\0'};
 
@@ -171,6 +215,7 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
 
 bool ss_parse_not_special_message(ss_data_t *data, char *msg)
 {
+    msg = ss_getstart_of_data(msg);
     msg = ss_parse_next(data->data.not_special_data.name,msg,',');
     if(msg[0] == '\0') {
         return false;
