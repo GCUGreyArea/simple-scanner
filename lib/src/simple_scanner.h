@@ -8,10 +8,10 @@
  * 
  */
 typedef enum ss_types {
+    SS_MSG_UNKNOWN,
     SS_LONG_MESSAGE,
     SS_SPECIAL_MESSAGE,
     SS_NOT_SPECIAL_MESSAGE,
-    SS_MSG_UNKNOWN
 } ss_types_t;
 
 /**
