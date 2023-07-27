@@ -10,7 +10,6 @@
 
 #include <libSimpleScanner.h>
 
-
 inline static void print_long_data(ss_data_t* data) {
     if(data->type != SS_LONG_MESSAGE) {
         fprintf(stderr, "ERRROR: Wrong message type");
@@ -42,7 +41,19 @@ inline static void print_special_data(ss_data_t*data) {
 
 
 inline static void print_not_special_data(ss_data_t*data) {
+    if(data->type != SS_NOT_SPECIAL_MESSAGE) {
+        fprintf(stderr, "ERRROR: Wrong message type");
+        abort();
+    }
 
+    printf("NOT SPECIAL MESSAGE\n");
+    printf("\tname: %s\n",data->data.not_special_data.name);
+    printf("\tplace: %s\n",data->data.not_special_data.place);
+    printf("\tstatus: %s\n",data->data.not_special_data.status);
+
+    for(int i=0;i<data->data.special_data.num_special;i++) {
+        printf("\tspecial data [%d]: %s\n",i, data->data.special_data.special[i]);
+    }
 }
 
 
@@ -72,9 +83,11 @@ int main(int argc, const char **argv)
                 printf("Unknonw message type\n");
             default:
                 break;
-
         }
-
     }
+    else {
+        printf("unknown message type: \"%s\"\n",argv[1]);
+    }
+
     return 0;
 }
