@@ -59,7 +59,9 @@ inline static char *ss_getstart_of_data(char *str)
 }
 
 /**
- * @brief parse from the start of the message to the next comma
+ * @brief parse from the start of the message to the next delimiter or the end
+ * of the string. If the functin parse to the end of the string, then a string
+ * with the null terminating character is returned
  *
  * @param dest
  * @param msg
@@ -102,7 +104,8 @@ bool ss_parse_long_mesage(ss_data_t *data, char *msg)
     char latitude[25] = {'\0'};
 
     msg = ss_parse_next(latitude, msg, ',');
-    if (msg == NULL)
+    // There should be more than one value
+    if (*msg == '\0')
     {
         return false;
     }
@@ -111,6 +114,8 @@ bool ss_parse_long_mesage(ss_data_t *data, char *msg)
     char *end = NULL;
 
     data->data.long_data.latitude = strtod(latitude, &end);
+
+    // TODO: No error checking is done here to make this is the only value!
     data->data.long_data.longitude = strtod(msg, &end);
 
     return true;
@@ -137,12 +142,12 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
     char longetude[25] = {'\0'};
 
     msg = ss_parse_next(latitude,msg,',');
-    if(msg == NULL || msg[0] == '\0') {
+    if(msg[0] == '\0') {
         return false;
     }
 
     msg = ss_parse_next(longetude,msg,',');
-    if(msg == NULL || msg[0] == '\0') {
+    if(msg[0] == '\0') {
         return false;
     }
 
@@ -158,6 +163,7 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
         msg = ss_parse_next(str, msg, ',');
     }
 
+    // TODO: No error checking is done to test out of bounds
     data->data.special_data.num_special = special_count;
     data->type = SS_SPECIAL_MESSAGE;
     return true;
@@ -166,14 +172,16 @@ bool ss_parse_special_message(ss_data_t *data, char *msg)
 bool ss_parse_not_special_message(ss_data_t *data, char *msg)
 {
     msg = ss_parse_next(data->data.not_special_data.name,msg,',');
-    if(msg == NULL || msg[0] == '\0') {
+    if(msg[0] == '\0') {
         return false;
     }
 
     msg = ss_parse_next(data->data.not_special_data.place,msg,',');
-    if(msg == NULL || msg[0] == '\0') {
+    if(msg[0] == '\0') {
         return false;
     }
+
+    // TODO: No error checking (make sure this is actually the last value)
     msg = ss_parse_next(data->data.not_special_data.status,msg,','); 
 
     data->type = SS_NOT_SPECIAL_MESSAGE;
