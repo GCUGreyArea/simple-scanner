@@ -17,6 +17,7 @@ inline static void print_long_data(ss_data_t* data) {
     }
 
     printf("LONG MESSAGE\n");
+    printf("\tname: %s\n", data->data.long_data.name);
     printf("\tlatitude: %f\n",data->data.long_data.latitude);
     printf("\tlongetude: %f\n",data->data.long_data.longitude);
 }
