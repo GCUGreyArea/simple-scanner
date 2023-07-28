@@ -7,7 +7,7 @@
 #define MAX_NAME_SIZE 50
 #define MAX_SPECIAL_SIZE 15
 #define MAX_NUM_SPACIALS 6
-#define AMX_PLACE_SIZE 50
+#define MAX_PLACE_SIZE 50
 #define MAX_STATUS_SIZE 25
 
 /**
@@ -47,11 +47,11 @@ typedef struct ss_special_data {
 
 /**
  * @brief not special data
- * @example "NOT SPECIAL TYPE: \"external system two\",\"Ormskirk research\",\acive\"""
+ * @example "NOT SPECIAL TYPE: \"external system two\",\"Ormskirk research\",\"acive\""
  */
 typedef struct ss_not_special_data {
     char name[MAX_NAME_SIZE];
-    char place[AMX_PLACE_SIZE];
+    char place[MAX_PLACE_SIZE];
     char status[MAX_PLACE_SIZE];
 } ss_not_special_data_t;
 
