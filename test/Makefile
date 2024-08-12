@@ -33,7 +33,7 @@ LNK = -Wl,-rpath,$(LIB)/build
 all: $(TARGET) $(OBJ) $(COBJ) $(LIBDEP)
 
 $(TARGET) : build $(CXXOBJ) $(COBJ)
-	$(CXX) $(CXXFLAGS) $(CXXOBJ) $(COBJ) -o $(BUILD)/$(TARGET) -L$(LIBDIR)/$(BUILD) -l$(NAME) $(LIBRARIES) -Wl,-rpath,$(LIBDIR)/$(BUILD)
+	$(CXX) $(CXXFLAGS) -fsanitize=address $(CXXOBJ) $(COBJ) -o $(BUILD)/$(TARGET) -L$(LIBDIR)/$(BUILD) -l$(NAME) $(LIBRARIES) -Wl,-rpath,$(LIBDIR)/$(BUILD)
 
 build:
 	mkdir -p "$(BUILD)/src"

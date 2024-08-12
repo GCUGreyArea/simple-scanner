@@ -29,7 +29,7 @@ UNAME := $(shell uname -s)
 all:  build $(TARGET) $(OBJ) $(LIBDEP)
 
 $(TARGET) : build $(OBJ) $(LIBDEP)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(BUILD)/$(TARGET) -L$(LIBDIR)/$(BUILD) -l$(NAME) $(LIBRARIES) -Wl,-rpath,$(LIBDIR)/build
+	$(CXX) $(CXXFLAGS) -fsanitize=address $(OBJ) -o $(BUILD)/$(TARGET) -L$(LIBDIR)/$(BUILD) -l$(NAME) $(LIBRARIES) -Wl,-rpath,$(LIBDIR)/build
 
 build:
 	mkdir -p "$(BUILD)/src"
