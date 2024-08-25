@@ -29,7 +29,7 @@ $ ./build/producer_consumer
 If you already have the code
 
 ```bash
-$ cd ring_buffer
+$ cd simple-scanner
 $ git pull
 $ make clean test benchmark project
 $ ./build/simple_scanner
