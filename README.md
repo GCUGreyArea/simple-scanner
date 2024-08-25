@@ -19,7 +19,7 @@ project in WSL2 using the latest Ubuntu distro.
 
 ```bash
 $ git clone https://github.com/GCUGreyArea/simple-scanner.git
-$ cd ring_buffer
+$ cd simple-scanner
 $ make test benchmark project
 $ ./build/producer_consumer
 ```
